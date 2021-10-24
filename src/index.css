@@ -6,7 +6,8 @@
   --color-accent-dark: #60412b;
 }
 
-html {
+html,
+body {
   background: var(--color-light);
 }
 
