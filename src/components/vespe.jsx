@@ -5,8 +5,12 @@ import "./vespe.css";
 
 class Vespe extends React.Component {
   state = {
-    vespe: getVespe(), // not the right way to init
+    vespe: [],
   };
+
+  componentDidMount() {
+    this.setState({ vespe: getVespe() });
+  }
 
   render() {
     return <section className="vespe">{this.renderVespe()}</section>;
