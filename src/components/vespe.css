@@ -1,0 +1,12 @@
+.vespe {
+  padding: 3rem;
+}
+
+.vespe td,
+.vespe th {
+  border-color: var(--color-secondary);
+}
+
+.vespe .button {
+  background-color: var(--color-accent-dark);
+}
