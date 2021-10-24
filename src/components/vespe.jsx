@@ -1,5 +1,6 @@
 import React from "react";
 import { getVespe, deleteVespa } from "../services/fakeVespaService";
+import Like from "./common/like";
 import "./vespe.css";
 
 class Vespe extends React.Component {
@@ -29,6 +30,7 @@ class Vespe extends React.Component {
               <th>Km</th>
               <th>Tariffe</th>
               <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>{this.renderVespeRows()}</tbody>
@@ -45,6 +47,9 @@ class Vespe extends React.Component {
         <td>{v.km}</td>
         <td>{v.tariffe}</td>
         <td>
+          <Like isLiked={v.mipiace} onToggle={() => this.handleLikeToggle(v)} />
+        </td>
+        <td>
           <button className="button" onClick={() => this.handleDelete(v._id)}>
             Delete
           </button>
@@ -56,6 +61,16 @@ class Vespe extends React.Component {
   handleDelete = vespaId => {
     const vespe = this.state.vespe.filter(v => v._id !== vespaId);
     deleteVespa(vespaId);
+
+    this.setState({ vespe });
+  };
+
+  handleLikeToggle = vespa => {
+    const vespe = [...this.state.vespe];
+    const index = vespe.indexOf(vespa);
+
+    vespe[index] = { ...vespa };
+    vespe[index].mipiace = !vespa.mipiace;
 
     this.setState({ vespe });
   };

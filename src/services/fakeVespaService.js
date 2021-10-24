@@ -20,6 +20,7 @@ const vespe = [
     },
     km: 12500,
     tariffe: 55,
+    mipiace: true,
   },
   {
     _id: "5b21ca3eeb7f6fbccd471817",
@@ -50,6 +51,7 @@ const vespe = [
     },
     km: 0,
     tariffe: 85,
+    mipiace: true,
   },
   {
     _id: "5b21ca3eeb7f6fbccd47181b",
