@@ -1,28 +1,60 @@
 import React from "react";
+import { getModelli } from "../services/fakeModelService";
 import { getVespe, deleteVespa } from "../services/fakeVespaService";
 import { paginate } from "../utils/paginate";
 import Like from "./common/like";
+import ListGroup from "./common/listGroup";
 import Pagination from "./common/pagination";
 import "./vespe.css";
 
 class Vespe extends React.Component {
   state = {
     vespe: [],
+    models: [],
     currentPage: 1,
     itemsPerPage: 4,
+    currentModelFilter: "",
   };
 
   componentDidMount() {
-    this.setState({ vespe: getVespe() });
+    const models = [{ _id: -1, nome: "All Models" }, ...getModelli()];
+
+    this.setState({
+      vespe: getVespe(),
+      models,
+      currentModelFilter: models[0].nome,
+    });
   }
 
   render() {
-    return <section className="vespe">{this.renderVespe()}</section>;
+    const { currentModelFilter, models } = this.state;
+
+    return (
+      <section className="vespe">
+        <div className="row">
+          <div className="column column-20">
+            <ListGroup
+              items={models.map(m => m.nome)}
+              currentItem={currentModelFilter}
+              onItemSelected={this.handleModelFilterSelected}
+            />
+          </div>
+          <div className="column">{this.renderTable()}</div>
+        </div>
+      </section>
+    );
   }
 
-  renderVespe() {
-    const { length: count } = this.state.vespe;
-    const { currentPage, itemsPerPage } = this.state;
+  renderTable() {
+    const { vespe, currentPage, itemsPerPage, currentModelFilter, models } =
+      this.state;
+
+    const filtered =
+      models.length > 0 && currentModelFilter === models[0].nome
+        ? vespe
+        : vespe.filter(v => v.modello.nome === currentModelFilter);
+    const paginatedVespe = paginate(filtered, currentPage, itemsPerPage);
+    const count = filtered.length;
 
     if (count === 0) return <p>Non ci sono Vespe disponibili.</p>;
 
@@ -42,7 +74,7 @@ class Vespe extends React.Component {
               <th></th>
             </tr>
           </thead>
-          <tbody>{this.renderVespeRows()}</tbody>
+          <tbody>{this.renderVespeRows(paginatedVespe)}</tbody>
         </table>
         <Pagination
           currentPage={currentPage}
@@ -54,10 +86,7 @@ class Vespe extends React.Component {
     );
   }
 
-  renderVespeRows() {
-    const { vespe, currentPage, itemsPerPage } = this.state;
-    const paginatedVespe = paginate(vespe, currentPage, itemsPerPage);
-
+  renderVespeRows(paginatedVespe) {
     return paginatedVespe.map(v => (
       <tr key={v._id}>
         <td>{v.modello.nome}</td>
@@ -97,6 +126,12 @@ class Vespe extends React.Component {
     if (this.state.currentPage === number) return;
 
     this.setState({ currentPage: number });
+  };
+
+  handleModelFilterSelected = modelName => {
+    if (this.state.currentModelFilter === modelName) return;
+
+    this.setState({ currentModelFilter: modelName });
   };
 }
 
