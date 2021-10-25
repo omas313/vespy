@@ -1,11 +1,15 @@
 import React from "react";
 import { getVespe, deleteVespa } from "../services/fakeVespaService";
+import { paginate } from "../utils/paginate";
 import Like from "./common/like";
+import Pagination from "./common/pagination";
 import "./vespe.css";
 
 class Vespe extends React.Component {
   state = {
     vespe: [],
+    currentPage: 1,
+    itemsPerPage: 4,
   };
 
   componentDidMount() {
@@ -18,6 +22,7 @@ class Vespe extends React.Component {
 
   renderVespe() {
     const { length: count } = this.state.vespe;
+    const { currentPage, itemsPerPage } = this.state;
 
     if (count === 0) return <p>Non ci sono Vespe disponibili.</p>;
 
@@ -39,12 +44,21 @@ class Vespe extends React.Component {
           </thead>
           <tbody>{this.renderVespeRows()}</tbody>
         </table>
+        <Pagination
+          currentPage={currentPage}
+          itemCount={count}
+          itemsPerPage={itemsPerPage}
+          onPageSelected={this.handlePageSelected}
+        />
       </React.Fragment>
     );
   }
 
   renderVespeRows() {
-    return this.state.vespe.map(v => (
+    const { vespe, currentPage, itemsPerPage } = this.state;
+    const paginatedVespe = paginate(vespe, currentPage, itemsPerPage);
+
+    return paginatedVespe.map(v => (
       <tr key={v._id}>
         <td>{v.modello.nome}</td>
         <td>{v.modello.cilindrata}</td>
@@ -77,6 +91,12 @@ class Vespe extends React.Component {
     vespe[index].mipiace = !vespa.mipiace;
 
     this.setState({ vespe });
+  };
+
+  handlePageSelected = number => {
+    if (this.state.currentPage === number) return;
+
+    this.setState({ currentPage: number });
   };
 }
 

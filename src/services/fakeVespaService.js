@@ -93,6 +93,16 @@ const vespe = [
     km: 500,
     tariffe: 70,
   },
+  {
+    _id: "764bca3eeb7f6fbccd47181e",
+    modello: {
+      _id: "5b21ca3eeb7f6fbccd471820",
+      nome: "Noleggio Vespa 50",
+      cilindrata: 50,
+    },
+    km: 560,
+    tariffe: 65,
+  },
 ];
 
 export function getVespe() {
