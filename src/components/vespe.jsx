@@ -8,21 +8,22 @@ import Pagination from "./common/pagination";
 import "./vespe.css";
 
 class Vespe extends React.Component {
+  defaultFilter = { nome: "Tutto" };
+
   state = {
     vespe: [],
     models: [],
     currentPage: 1,
-    itemsPerPage: 4,
-    currentModelFilter: "",
+    itemsPerPage: 3,
+    currentModelFilter: this.defaultFilter,
   };
 
   componentDidMount() {
-    const models = [{ _id: -1, nome: "All Models" }, ...getModelli()];
+    const models = [this.defaultFilter, ...getModelli()];
 
     this.setState({
       vespe: getVespe(),
       models,
-      currentModelFilter: models[0].nome,
     });
   }
 
@@ -34,8 +35,8 @@ class Vespe extends React.Component {
         <div className="row">
           <div className="column column-20">
             <ListGroup
-              items={models.map(m => m.nome)}
-              currentItem={currentModelFilter}
+              items={models}
+              selectedItem={currentModelFilter}
               onItemSelected={this.handleModelFilterSelected}
             />
           </div>
@@ -46,16 +47,23 @@ class Vespe extends React.Component {
   }
 
   renderTable() {
-    const { vespe, currentPage, itemsPerPage, currentModelFilter, models } =
-      this.state;
+    const {
+      vespe: allVespe,
+      currentPage,
+      itemsPerPage,
+      currentModelFilter,
+      models,
+    } = this.state;
+
+    if (allVespe.length === 0 || models.length === 0) return null;
 
     const filtered =
-      models.length > 0 && currentModelFilter === models[0].nome
-        ? vespe
-        : vespe.filter(v => v.modello.nome === currentModelFilter);
-    const paginatedVespe = paginate(filtered, currentPage, itemsPerPage);
-    const count = filtered.length;
+      currentModelFilter && currentModelFilter._id
+        ? allVespe.filter(v => v.modello._id === currentModelFilter._id)
+        : allVespe;
+    const paginated = paginate(filtered, currentPage, itemsPerPage);
 
+    const count = filtered.length;
     if (count === 0) return <p>Non ci sono Vespe disponibili.</p>;
 
     return (
@@ -74,7 +82,7 @@ class Vespe extends React.Component {
               <th></th>
             </tr>
           </thead>
-          <tbody>{this.renderVespeRows(paginatedVespe)}</tbody>
+          <tbody>{this.renderVespeRows(paginated)}</tbody>
         </table>
         <Pagination
           currentPage={currentPage}
@@ -128,10 +136,10 @@ class Vespe extends React.Component {
     this.setState({ currentPage: number });
   };
 
-  handleModelFilterSelected = modelName => {
-    if (this.state.currentModelFilter === modelName) return;
+  handleModelFilterSelected = model => {
+    if (this.state.currentModelFilter === model) return;
 
-    this.setState({ currentModelFilter: modelName });
+    this.setState({ currentModelFilter: model, currentPage: 1 });
   };
 }
 

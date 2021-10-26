@@ -1,29 +1,40 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-// input: items, currentItem
-// output: onItemSelected
+const ListGroup = ({
+  items,
+  selectedItem,
+  onItemSelected,
+  textProperty,
+  valueProperty,
+}) =>
+  items.map(i => {
+    const text = i[textProperty];
+    const value = i[valueProperty];
 
-const ListGroup = ({ items, currentItem, onItemSelected }) => {
-  return items.map(i => {
     let buttonClasses = "button-small";
-    if (i !== currentItem) buttonClasses += " button-outline";
+    if (selectedItem && selectedItem[valueProperty] !== value)
+      buttonClasses += " button-outline";
 
     return (
       <button
-        key={i}
+        key={value || text}
         className={buttonClasses}
         onClick={() => onItemSelected(i)}
       >
-        {i}
+        {text}
       </button>
     );
   });
+
+ListGroup.defaultProps = {
+  textProperty: "nome",
+  valueProperty: "_id",
 };
 
 ListGroup.propTypes = {
   items: PropTypes.array.isRequired,
-  currentItem: PropTypes.any.isRequired,
+  selectedItem: PropTypes.any.isRequired,
   onItemSelected: PropTypes.func.isRequired,
 };
 
