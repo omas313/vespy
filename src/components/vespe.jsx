@@ -85,6 +85,7 @@ class Vespe extends React.Component {
                 </p>
                 <VespeTable
                   vespe={vespe}
+                  sortColumn={sortColumn}
                   onLikeToggle={this.handleLikeToggle}
                   onDelete={this.handleDelete}
                   onSort={this.handleSort}
@@ -112,21 +113,9 @@ class Vespe extends React.Component {
     this.setState({ vespe });
   };
 
-  handleSort = propFunction => {
-    const sortColumn = { ...this.state.sortColumn };
-
-    if (this.isSameSortProperty(sortColumn.propFunction, propFunction))
-      sortColumn.order = sortColumn.order === "asc" ? "dec" : "asc";
-    else {
-      sortColumn.propFunction = propFunction;
-      sortColumn.order = "asc";
-    }
-
+  handleSort = sortColumn => {
     this.setState({ sortColumn });
   };
-
-  isSameSortProperty = (current, selected) =>
-    current && current.toString() === selected.toString();
 
   handleLikeToggle = vespa => {
     const vespe = [...this.state.vespe];
