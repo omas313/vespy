@@ -1,14 +1,14 @@
 import React from "react";
 import Like from "./common/like";
 
-const VespeTable = ({ vespe, onLikeToggle, onDelete }) => (
+const VespeTable = ({ vespe, onLikeToggle, onDelete, onSort }) => (
   <table>
     <thead>
       <tr>
-        <th>Modello</th>
-        <th>Cilidrata</th>
-        <th>Km</th>
-        <th>Tariffe</th>
+        <th onClick={() => onSort(v => v.modello.nome)}>Modello</th>
+        <th onClick={() => onSort(v => v.modello.cilindrata)}>Cilidrata</th>
+        <th onClick={() => onSort(v => v.km)}>Km</th>
+        <th onClick={() => onSort(v => v.tariffe)}>Tariffe</th>
         <th></th>
         <th></th>
       </tr>

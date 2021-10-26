@@ -16,6 +16,7 @@ class Vespe extends React.Component {
     currentPage: 1,
     itemsPerPage: 3,
     currentModelFilter: this.defaultFilter,
+    currentSortColumn: {},
   };
 
   componentDidMount() {
@@ -34,6 +35,7 @@ class Vespe extends React.Component {
       itemsPerPage,
       currentModelFilter,
       models,
+      currentSortColumn,
     } = this.state;
 
     if (allVespe.length === 0 || models.length === 0)
@@ -43,7 +45,23 @@ class Vespe extends React.Component {
       currentModelFilter && currentModelFilter._id
         ? allVespe.filter(v => v.modello._id === currentModelFilter._id)
         : allVespe;
-    const vespe = paginate(filtered, currentPage, itemsPerPage);
+
+    const isReverseOrder = currentSortColumn.order === "dec";
+    const sorted = currentSortColumn.propFunction
+      ? filtered.sort((a, b) => {
+          const valueA = currentSortColumn.propFunction(a);
+          const valueB = currentSortColumn.propFunction(b);
+          let returnValue = 0;
+
+          if (valueA < valueB) returnValue = -1;
+          else if (valueA > valueB) returnValue = 1;
+          else returnValue = 0;
+
+          return isReverseOrder ? (returnValue *= -1) : returnValue;
+        })
+      : filtered;
+
+    const vespe = paginate(sorted, currentPage, itemsPerPage);
 
     const count = filtered.length;
 
@@ -69,6 +87,7 @@ class Vespe extends React.Component {
                   vespe={vespe}
                   onLikeToggle={this.handleLikeToggle}
                   onDelete={this.handleDelete}
+                  onSort={this.handleSort}
                 />
                 <Pagination
                   currentPage={currentPage}
@@ -92,6 +111,23 @@ class Vespe extends React.Component {
 
     this.setState({ vespe });
   };
+
+  handleSort = propFunction => {
+    const currentSortColumn = { ...this.state.currentSortColumn };
+
+    if (this.isSameSortProperty(currentSortColumn.propFunction, propFunction))
+      currentSortColumn.order =
+        currentSortColumn.order === "asc" ? "dec" : "asc";
+    else {
+      currentSortColumn.propFunction = propFunction;
+      currentSortColumn.order = "asc";
+    }
+
+    this.setState({ currentSortColumn });
+  };
+
+  isSameSortProperty = (current, selected) =>
+    current && current.toString() === selected.toString();
 
   handleLikeToggle = vespa => {
     const vespe = [...this.state.vespe];
