@@ -15,8 +15,8 @@ class Vespe extends React.Component {
     models: [],
     currentPage: 1,
     itemsPerPage: 3,
-    currentModelFilter: this.defaultFilter,
-    currentSortColumn: {},
+    modelFilter: this.defaultFilter,
+    sortColumn: {},
   };
 
   componentDidMount() {
@@ -33,24 +33,24 @@ class Vespe extends React.Component {
       vespe: allVespe,
       currentPage,
       itemsPerPage,
-      currentModelFilter,
+      modelFilter,
       models,
-      currentSortColumn,
+      sortColumn,
     } = this.state;
 
     if (allVespe.length === 0 || models.length === 0)
       return this.renderNoVespeMessage();
 
     const filtered =
-      currentModelFilter && currentModelFilter._id
-        ? allVespe.filter(v => v.modello._id === currentModelFilter._id)
+      modelFilter && modelFilter._id
+        ? allVespe.filter(v => v.modello._id === modelFilter._id)
         : allVespe;
 
-    const isReverseOrder = currentSortColumn.order === "dec";
-    const sorted = currentSortColumn.propFunction
+    const isReverseOrder = sortColumn.order === "dec";
+    const sorted = sortColumn.propFunction
       ? filtered.sort((a, b) => {
-          const valueA = currentSortColumn.propFunction(a);
-          const valueB = currentSortColumn.propFunction(b);
+          const valueA = sortColumn.propFunction(a);
+          const valueB = sortColumn.propFunction(b);
           let returnValue = 0;
 
           if (valueA < valueB) returnValue = -1;
@@ -71,7 +71,7 @@ class Vespe extends React.Component {
           <div className="column column-20">
             <ListGroup
               items={models}
-              selectedItem={currentModelFilter}
+              selectedItem={modelFilter}
               onItemSelected={this.handleModelFilterSelected}
             />
           </div>
@@ -113,17 +113,16 @@ class Vespe extends React.Component {
   };
 
   handleSort = propFunction => {
-    const currentSortColumn = { ...this.state.currentSortColumn };
+    const sortColumn = { ...this.state.sortColumn };
 
-    if (this.isSameSortProperty(currentSortColumn.propFunction, propFunction))
-      currentSortColumn.order =
-        currentSortColumn.order === "asc" ? "dec" : "asc";
+    if (this.isSameSortProperty(sortColumn.propFunction, propFunction))
+      sortColumn.order = sortColumn.order === "asc" ? "dec" : "asc";
     else {
-      currentSortColumn.propFunction = propFunction;
-      currentSortColumn.order = "asc";
+      sortColumn.propFunction = propFunction;
+      sortColumn.order = "asc";
     }
 
-    this.setState({ currentSortColumn });
+    this.setState({ sortColumn });
   };
 
   isSameSortProperty = (current, selected) =>
@@ -146,9 +145,9 @@ class Vespe extends React.Component {
   };
 
   handleModelFilterSelected = model => {
-    if (this.state.currentModelFilter === model) return;
+    if (this.state.modelFilter === model) return;
 
-    this.setState({ currentModelFilter: model, currentPage: 1 });
+    this.setState({ modelFilter: model, currentPage: 1 });
   };
 }
 
