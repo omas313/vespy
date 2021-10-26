@@ -36,7 +36,8 @@ class Vespe extends React.Component {
       models,
     } = this.state;
 
-    if (allVespe.length === 0 || models.length === 0) return null;
+    if (allVespe.length === 0 || models.length === 0)
+      return this.renderNoVespeMessage();
 
     const filtered =
       currentModelFilter && currentModelFilter._id
@@ -45,7 +46,6 @@ class Vespe extends React.Component {
     const vespe = paginate(filtered, currentPage, itemsPerPage);
 
     const count = filtered.length;
-    if (count === 0) return <p>Non ci sono Vespe disponibili.</p>;
 
     return (
       <section className="vespe">
@@ -58,25 +58,33 @@ class Vespe extends React.Component {
             />
           </div>
           <div className="column">
-            <p>
-              Ci sono <strong>{count}</strong> vespe disponibili.
-            </p>
-            <VespeTable
-              vespe={vespe}
-              onLikeToggle={this.handleLikeToggle}
-              onDelete={this.handleDelete}
-            />
-            <Pagination
-              currentPage={currentPage}
-              itemCount={count}
-              itemsPerPage={itemsPerPage}
-              onPageSelected={this.handlePageSelected}
-            />
+            {count === 0 ? (
+              this.renderNoVespeMessage()
+            ) : (
+              <React.Fragment>
+                <p>
+                  Ci sono <strong>{count}</strong> vespe disponibili.
+                </p>
+                <VespeTable
+                  vespe={vespe}
+                  onLikeToggle={this.handleLikeToggle}
+                  onDelete={this.handleDelete}
+                />
+                <Pagination
+                  currentPage={currentPage}
+                  itemCount={count}
+                  itemsPerPage={itemsPerPage}
+                  onPageSelected={this.handlePageSelected}
+                />
+              </React.Fragment>
+            )}
           </div>
         </div>
       </section>
     );
   }
+
+  renderNoVespeMessage = () => <p>Non ci sono Vespe disponibili.</p>;
 
   handleDelete = vespaId => {
     const vespe = this.state.vespe.filter(v => v._id !== vespaId);
