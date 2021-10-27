@@ -1,40 +1,27 @@
 import React from "react";
 import Like from "./common/like";
+import TableHeader from "./common/tableHeader";
 
 class VespeTable extends React.Component {
-  raiseSort = propFunction => {
-    const sortColumn = { ...this.props.sortColumn };
-
-    if (this.isSameSortProperty(sortColumn.propFunction, propFunction))
-      sortColumn.order = sortColumn.order === "asc" ? "dec" : "asc";
-    else {
-      sortColumn.propFunction = propFunction;
-      sortColumn.order = "asc";
-    }
-
-    this.props.onSort(sortColumn);
-  };
-
-  isSameSortProperty = (current, selected) =>
-    current && current.toString() === selected.toString();
+  columns = [
+    { label: "Modello", propFunction: v => v.modello.nome },
+    { label: "Cilidrata", propFunction: v => v.modello.cilindrata },
+    { label: "Km", propFunction: v => v.km },
+    { label: "Tariffe", propFunction: v => v.tariffe },
+    {},
+    {},
+  ];
 
   render() {
-    const { vespe, onLikeToggle, onDelete } = this.props;
+    const { vespe, sortColumn, onLikeToggle, onDelete, onSort } = this.props;
 
     return (
       <table>
-        <thead>
-          <tr>
-            <th onClick={() => this.raiseSort(v => v.modello.nome)}>Modello</th>
-            <th onClick={() => this.raiseSort(v => v.modello.cilindrata)}>
-              Cilidrata
-            </th>
-            <th onClick={() => this.raiseSort(v => v.km)}>Km</th>
-            <th onClick={() => this.raiseSort(v => v.tariffe)}>Tariffe</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
+        <TableHeader
+          columns={this.columns}
+          sortColumn={sortColumn}
+          onSort={onSort}
+        />
         <tbody>
           {vespe.map(v => (
             <tr key={v._id}>
