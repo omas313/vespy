@@ -2,13 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 
 class TableHeader extends React.Component {
-  raiseSort = propFunction => {
+  raiseSort = path => {
     const sortColumn = { ...this.props.sortColumn };
 
-    if (this.isSameSortProperty(sortColumn.propFunction, propFunction))
+    if (this.isSameSortProperty(sortColumn.path, path))
       sortColumn.order = sortColumn.order === "asc" ? "dec" : "asc";
     else {
-      sortColumn.propFunction = propFunction;
+      sortColumn.path = path;
       sortColumn.order = "asc";
     }
 
@@ -24,14 +24,12 @@ class TableHeader extends React.Component {
     return (
       <thead>
         <tr>
-          {columns.map(c => {
-            const onClick = c.propFunction
-              ? () => this.raiseSort(c.propFunction)
-              : null;
+          {columns.map(column => {
+            const onClick = column.path && (() => this.raiseSort(column.path));
 
             return (
-              <th key={columns.indexOf(c)} onClick={onClick}>
-                {c.label}
+              <th key={columns.indexOf(column)} onClick={onClick}>
+                {column.label}
               </th>
             );
           })}

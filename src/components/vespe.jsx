@@ -47,10 +47,10 @@ class Vespe extends React.Component {
         : allVespe;
 
     const isReverseOrder = sortColumn.order === "dec";
-    const sorted = sortColumn.propFunction
+    const sorted = sortColumn.path
       ? filtered.sort((a, b) => {
-          const valueA = sortColumn.propFunction(a);
-          const valueB = sortColumn.propFunction(b);
+          const valueA = sortColumn.path(a);
+          const valueB = sortColumn.path(b);
           let returnValue = 0;
 
           if (valueA < valueB) returnValue = -1;
