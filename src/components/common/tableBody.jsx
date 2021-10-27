@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 class TableBody extends React.Component {
   renderCellContent = (item, column) =>
@@ -22,5 +23,10 @@ class TableBody extends React.Component {
     );
   }
 }
+
+TableBody.propTypes = {
+  data: PropTypes.array.isRequired,
+  columns: PropTypes.array.isRequired,
+};
 
 export default TableBody;

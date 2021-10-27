@@ -1,6 +1,7 @@
 import React from "react";
 import Like from "./common/like";
 import Table from "./common/table";
+import PropTypes from "prop-types";
 
 class VespeTable extends React.Component {
   columns = [
@@ -41,5 +42,13 @@ class VespeTable extends React.Component {
     );
   }
 }
+
+VespeTable.propTypes = {
+  data: PropTypes.array.isRequired,
+  sortColumn: PropTypes.object.isRequired,
+  onSort: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onLikeToggle: PropTypes.func.isRequired,
+};
 
 export default VespeTable;
