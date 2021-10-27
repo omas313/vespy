@@ -25,6 +25,10 @@ code {
     monospace;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 .button-small {
   font-size: 0.8rem;
   height: 2.8rem;

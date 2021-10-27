@@ -5,7 +5,7 @@ class TableHeader extends React.Component {
   raiseSort = path => {
     const sortColumn = { ...this.props.sortColumn };
 
-    if (this.isSameSortProperty(sortColumn.path, path))
+    if (this.isSameProperty(sortColumn.path, path))
       sortColumn.order = sortColumn.order === "asc" ? "dec" : "asc";
     else {
       sortColumn.path = path;
@@ -15,11 +15,21 @@ class TableHeader extends React.Component {
     this.props.onSort(sortColumn);
   };
 
-  isSameSortProperty = (current, selected) =>
+  isSameProperty = (current, selected) =>
     current && current.toString() === selected.toString();
 
+  renderSortIcon = (column, sortColumn) => {
+    if (!column.path || !this.isSameProperty(sortColumn.path, column.path))
+      return null;
+
+    let classes = "fa fa-sort-" + (sortColumn.order === "asc" ? "up" : "down");
+    return <i className={classes}></i>;
+  };
+
+  getCellClass = column => (column.path ? "clickable" : null);
+
   render() {
-    const { columns } = this.props;
+    const { columns, sortColumn } = this.props;
 
     return (
       <thead>
@@ -28,8 +38,12 @@ class TableHeader extends React.Component {
             const onClick = column.path && (() => this.raiseSort(column.path));
 
             return (
-              <th key={columns.indexOf(column)} onClick={onClick}>
-                {column.label}
+              <th
+                key={columns.indexOf(column)}
+                onClick={onClick}
+                className={this.getCellClass(column)}
+              >
+                {column.label} {this.renderSortIcon(column, sortColumn)}
               </th>
             );
           })}
