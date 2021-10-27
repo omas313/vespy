@@ -29,11 +29,11 @@ class VespeTable extends React.Component {
   ];
 
   render() {
-    const { vespe, sortColumn, onSort } = this.props;
+    const { data, sortColumn, onSort } = this.props;
 
     return (
       <Table
-        data={vespe}
+        data={data}
         columns={this.columns}
         sortColumn={sortColumn}
         onSort={onSort}

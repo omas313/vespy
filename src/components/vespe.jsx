@@ -41,6 +41,58 @@ class Vespe extends React.Component {
     if (allVespe.length === 0 || models.length === 0)
       return this.renderNoVespeMessage();
 
+    const { count, data } = this.getPaginatedData();
+
+    return (
+      <section className="vespe">
+        <div className="row">
+          <div className="column column-20">
+            <ListGroup
+              items={models}
+              selectedItem={modelFilter}
+              onItemSelected={this.handleModelFilterSelected}
+            />
+          </div>
+          <div className="column">
+            {count === 0 ? (
+              this.renderNoVespeMessage()
+            ) : (
+              <React.Fragment>
+                <p>
+                  Ci sono <strong>{count}</strong> vespe disponibili.
+                </p>
+                <VespeTable
+                  data={data}
+                  sortColumn={sortColumn}
+                  onSort={this.handleSort}
+                  onDelete={this.handleDelete}
+                  onLikeToggle={this.handleLikeToggle}
+                />
+                <Pagination
+                  currentPage={currentPage}
+                  itemCount={count}
+                  itemsPerPage={itemsPerPage}
+                  onPageSelected={this.handlePageSelected}
+                />
+              </React.Fragment>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  renderNoVespeMessage = () => <p>Non ci sono Vespe disponibili.</p>;
+
+  getPaginatedData = () => {
+    const {
+      vespe: allVespe,
+      currentPage,
+      itemsPerPage,
+      modelFilter,
+      sortColumn,
+    } = this.state;
+
     const filtered =
       modelFilter && modelFilter._id
         ? allVespe.filter(v => v.modello._id === modelFilter._id)
@@ -65,46 +117,8 @@ class Vespe extends React.Component {
 
     const count = filtered.length;
 
-    return (
-      <section className="vespe">
-        <div className="row">
-          <div className="column column-20">
-            <ListGroup
-              items={models}
-              selectedItem={modelFilter}
-              onItemSelected={this.handleModelFilterSelected}
-            />
-          </div>
-          <div className="column">
-            {count === 0 ? (
-              this.renderNoVespeMessage()
-            ) : (
-              <React.Fragment>
-                <p>
-                  Ci sono <strong>{count}</strong> vespe disponibili.
-                </p>
-                <VespeTable
-                  vespe={vespe}
-                  sortColumn={sortColumn}
-                  onSort={this.handleSort}
-                  onDelete={this.handleDelete}
-                  onLikeToggle={this.handleLikeToggle}
-                />
-                <Pagination
-                  currentPage={currentPage}
-                  itemCount={count}
-                  itemsPerPage={itemsPerPage}
-                  onPageSelected={this.handlePageSelected}
-                />
-              </React.Fragment>
-            )}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  renderNoVespeMessage = () => <p>Non ci sono Vespe disponibili.</p>;
+    return { count, data: vespe };
+  };
 
   handleDelete = vespaId => {
     const vespe = this.state.vespe.filter(v => v._id !== vespaId);
