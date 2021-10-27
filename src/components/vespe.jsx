@@ -86,9 +86,9 @@ class Vespe extends React.Component {
                 <VespeTable
                   vespe={vespe}
                   sortColumn={sortColumn}
-                  onLikeToggle={this.handleLikeToggle}
-                  onDelete={this.handleDelete}
                   onSort={this.handleSort}
+                  onDelete={this.handleDelete}
+                  onLikeToggle={this.handleLikeToggle}
                 />
                 <Pagination
                   currentPage={currentPage}

@@ -1,7 +1,6 @@
 import React from "react";
 import Like from "./common/like";
-import TableBody from "./common/tableBody";
-import TableHeader from "./common/tableHeader";
+import Table from "./common/table";
 
 class VespeTable extends React.Component {
   columns = [
@@ -33,14 +32,12 @@ class VespeTable extends React.Component {
     const { vespe, sortColumn, onSort } = this.props;
 
     return (
-      <table>
-        <TableHeader
-          columns={this.columns}
-          sortColumn={sortColumn}
-          onSort={onSort}
-        />
-        <TableBody data={vespe} columns={this.columns} />
-      </table>
+      <Table
+        data={vespe}
+        columns={this.columns}
+        sortColumn={sortColumn}
+        onSort={onSort}
+      />
     );
   }
 }
