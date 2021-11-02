@@ -8,9 +8,15 @@ import NotFound from "./components/notFound";
 import VespaForm from "./components/vespa";
 
 function App() {
+  const links = [
+    { url: "/vespe", label: "All Vespe" },
+    { url: "/customers", label: "Customers" },
+    { url: "/rentals", label: "Rentals" },
+  ];
+
   return (
     <main>
-      <Navbar />
+      <Navbar brand="Vespe" links={links} />
       <Switch>
         <Route path="/vespe/:id" component={VespaForm} />
         <Route path="/vespe" component={Vespe} />

@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ brand, links }) => {
   const navStyles = {
     display: "flex",
   };
@@ -17,18 +17,16 @@ const Navbar = () => {
 
   return (
     <nav style={navStyles}>
-      <div>Vespe</div>
+      <div>
+        <NavLink to="/">{brand}</NavLink>
+      </div>
       <div style={linkContainerStyles}>
         <ul>
-          <li style={listItemStyles}>
-            <NavLink to="/vespe">Vespe</NavLink>
-          </li>
-          <li style={listItemStyles}>
-            <NavLink to="/customers">Customers</NavLink>
-          </li>
-          <li style={listItemStyles}>
-            <NavLink to="/rentals">Rentals</NavLink>
-          </li>
+          {links.map(l => (
+            <li style={listItemStyles} key={l.url + l.label}>
+              <NavLink to={l.url}>{l.label}</NavLink>
+            </li>
+          ))}
         </ul>
       </div>
     </nav>
