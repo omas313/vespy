@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 
 const LoginForm = () => {
-  const emailRef = React.createRef();
+  const [data, setData] = useState({ email: "", password: "" });
 
   const styles = {
     margin: "0 10em",
@@ -14,17 +14,31 @@ const LoginForm = () => {
     console.log("form submitted");
   };
 
-  useEffect(() => {
-    emailRef.current.focus();
-    console.log(emailRef.current.value);
-  });
+  const handleChange = ({ currentTarget: input }) => {
+    setData({
+      ...data,
+      [input.name]: input.value,
+    });
+  };
 
   return (
     <div style={styles}>
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
-        <input type="email" placeholder="Enter your email..." ref={emailRef} />
-        <input type="password" placeholder="Enter your password..." />
+        <input
+          type="email"
+          placeholder="Enter your email..."
+          name="email"
+          value={data.email}
+          onChange={handleChange}
+        />
+        <input
+          type="password"
+          placeholder="Enter your password..."
+          name="password"
+          value={data.password}
+          onChange={handleChange}
+        />
         <button className="button">Login</button>
       </form>
     </div>
