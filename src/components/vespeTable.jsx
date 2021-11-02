@@ -2,12 +2,13 @@ import React from "react";
 import Like from "./common/like";
 import Table from "./common/table";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 class VespeTable extends React.Component {
   columns = [
     {
       label: "Modello",
-      path: v => v.modello.nome,
+      content: v => <Link to={`/vespe/${v._id}`}>{v.modello.nome}</Link>,
     },
     {
       label: "Cilidrata",

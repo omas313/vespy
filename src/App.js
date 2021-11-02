@@ -5,12 +5,14 @@ import Vespe from "./components/vespe";
 import Customers from "./components/customers";
 import Rentals from "./components/rentals";
 import NotFound from "./components/notFound";
+import VespaForm from "./components/vespa";
 
 function App() {
   return (
     <main>
       <Navbar />
       <Switch>
+        <Route path="/vespe/:id" component={VespaForm} />
         <Route path="/vespe" component={Vespe} />
         <Route path="/customers" component={Customers} />
         <Route path="/rentals" component={Rentals} />
