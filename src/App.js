@@ -6,6 +6,7 @@ import Rentals from "./components/rentals";
 import NotFound from "./components/notFound";
 import VespaForm from "./components/vespaForm";
 import "./App.css";
+import LoginForm from "./components/loginForm";
 
 function App() {
   const links = [
@@ -23,6 +24,7 @@ function App() {
         <Route path="/customers" component={Customers} />
         <Route path="/rentals" component={Rentals} />
         <Route path="/not-found" component={NotFound} />
+        <Route path="/login" component={LoginForm} />
         <Redirect exact from="/" to="/vespe" />
         <Redirect to="/not-found" />
       </Switch>
