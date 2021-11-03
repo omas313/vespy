@@ -5,8 +5,9 @@ import Customers from "./components/customers";
 import Rentals from "./components/rentals";
 import NotFound from "./components/notFound";
 import VespaForm from "./components/vespaForm";
-import "./App.css";
 import LoginForm from "./components/loginForm";
+import RegisterForm from "./components/registerForm";
+import "./App.css";
 
 function App() {
   const links = [
@@ -25,6 +26,7 @@ function App() {
         <Route path="/rentals" component={Rentals} />
         <Route path="/not-found" component={NotFound} />
         <Route path="/login" component={LoginForm} />
+        <Route path="/register" component={RegisterForm} />
         <Redirect exact from="/" to="/vespe" />
         <Redirect to="/not-found" />
       </Switch>

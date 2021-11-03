@@ -15,6 +15,7 @@ const Navbar = ({ brand, links }) => {
 
   const listStyles = {
     marginBottom: "0",
+    display: "flex",
   };
 
   const listItemStyles = {
@@ -38,7 +39,14 @@ const Navbar = ({ brand, links }) => {
         </ul>
       </div>
       <div>
-        <Link to="/login">Login</Link>
+        <ul style={listStyles}>
+          <li style={listItemStyles}>
+            <Link to="/login">Login</Link>
+          </li>
+          <li style={listItemStyles}>
+            <Link to="/register">Register</Link>
+          </li>
+        </ul>
       </div>
     </nav>
   );
