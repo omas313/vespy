@@ -17,7 +17,7 @@ function App() {
 
   return (
     <main>
-      <Navbar brand="Vespe" links={links} />
+      <Navbar brand="Vespy" links={links} />
       <Switch>
         <Route path="/vespe/:id" component={VespaForm} />
         <Route path="/vespe" component={Vespe} />

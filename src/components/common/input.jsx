@@ -1,4 +1,4 @@
-const Input = ({ name, label, type, value, placeholder, onChange }) => {
+const Input = ({ name, label, type, value, placeholder, error, onChange }) => {
   return (
     <>
       {label && <label htmlFor={name}>{label}</label>}
@@ -10,6 +10,7 @@ const Input = ({ name, label, type, value, placeholder, onChange }) => {
         placeholder={placeholder}
         onChange={onChange}
       />
+      {error && <p>{error}</p>}
     </>
   );
 };
