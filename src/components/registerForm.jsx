@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Joi from "joi-browser";
 import Input from "./common/input";
+import Form from "./common/form";
 
 const LoginForm = () => {
   const [data, setData] = useState({
@@ -20,68 +21,29 @@ const LoginForm = () => {
     margin: "0 10em",
   };
 
-  const validateInput = ({ name, value }) => {
-    const subObject = { [name]: value };
-    const subSchema = { [name]: schema[name] };
-    const { error } = Joi.validate(subObject, subSchema);
-
-    return error ? error.details[0].message : null;
-  };
-
-  const validateForm = () => {
-    const options = { abortEarly: false };
-    const { error } = Joi.validate(data, schema, options);
-    if (!error) return null;
-
-    const newErrors = error.details.reduce((allErrors, currentItem) => {
-      const propName = currentItem.path[0];
-      const hasProp = Boolean(allErrors[propName]);
-      const message = currentItem.message + ".";
-
-      allErrors[propName] = hasProp
-        ? `${allErrors[propName]} ${message}`
-        : message;
-      return allErrors;
-    }, {});
-
-    return newErrors;
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-
-    const newErrors = validateForm();
-    setErrors(newErrors || {});
-    if (newErrors && Object.keys(newErrors).length > 0) return;
-
+  const handleSubmit = () => {
     console.log("form submitted");
   };
 
-  const handleChange = ({ currentTarget: input }) => {
-    const newErrors = { ...errors };
-
-    const errorMessage = validateInput(input);
-    if (errorMessage) newErrors[input.name] = errorMessage;
-    else delete newErrors[input.name];
-
-    setData({
-      ...data,
-      [input.name]: input.value,
-    });
-    setErrors(newErrors);
-  };
-
   return (
-    <div style={styles}>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
+    <>
+      <h2>Register</h2>
+      <Form
+        formStyles={styles}
+        data={data}
+        onDataChange={setData}
+        schema={schema}
+        errors={errors}
+        onErrorsChanged={setErrors}
+        onSubmit={handleSubmit}
+        submitButtonLabel="Register"
+      >
         <Input
           type="email"
           placeholder="Enter your email..."
           name="username"
           label="Username"
           value={data.username}
-          onChange={handleChange}
           error={errors.username}
         />
         <Input
@@ -90,7 +52,6 @@ const LoginForm = () => {
           name="password"
           label="Password"
           value={data.password}
-          onChange={handleChange}
           error={errors.password}
         />
         <Input
@@ -99,14 +60,10 @@ const LoginForm = () => {
           name="name"
           label="Name"
           value={data.name}
-          onChange={handleChange}
           error={errors.name}
         />
-        <button className="button" disabled={validateForm()}>
-          Submit
-        </button>
-      </form>
-    </div>
+      </Form>
+    </>
   );
 };
 
