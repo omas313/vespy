@@ -20,6 +20,7 @@ function App() {
     <main>
       <Navbar brand="Vespy" links={links} />
       <Switch>
+        <Route path="/vespe/new" component={VespaForm} />
         <Route path="/vespe/:id" component={VespaForm} />
         <Route path="/vespe" component={Vespe} />
         <Route path="/customers" component={Customers} />

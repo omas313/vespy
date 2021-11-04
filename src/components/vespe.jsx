@@ -6,6 +6,7 @@ import ListGroup from "./common/listGroup";
 import Pagination from "./common/pagination";
 import React from "react";
 import VespeTable from "./vespeTable";
+import { Link } from "react-router-dom";
 
 class Vespe extends React.Component {
   defaultFilter = { nome: "Tutto" };
@@ -38,26 +39,29 @@ class Vespe extends React.Component {
       sortColumn,
     } = this.state;
 
-    if (allVespe.length === 0 || models.length === 0)
-      return this.renderNoVespeMessage();
-
+    const hasData = allVespe.length > 0 && models.length > 0;
     const { count, data } = this.getPaginatedData();
 
     return (
       <section className="vespe">
         <div className="row">
           <div className="column column-20">
-            <ListGroup
-              items={models}
-              selectedItem={modelFilter}
-              onItemSelected={this.handleModelFilterSelected}
-            />
+            {hasData && (
+              <ListGroup
+                items={models}
+                selectedItem={modelFilter}
+                onItemSelected={this.handleModelFilterSelected}
+              />
+            )}
           </div>
           <div className="column">
-            {count === 0 ? (
+            <Link to="/vespe/new">
+              <button className="button">New Vespa</button>
+            </Link>
+            {!hasData || count === 0 ? (
               this.renderNoVespeMessage()
             ) : (
-              <React.Fragment>
+              <>
                 <p>
                   Ci sono <strong>{count}</strong> vespe disponibili.
                 </p>
@@ -74,7 +78,7 @@ class Vespe extends React.Component {
                   itemsPerPage={itemsPerPage}
                   onPageSelected={this.handlePageSelected}
                 />
-              </React.Fragment>
+              </>
             )}
           </div>
         </div>

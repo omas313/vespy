@@ -35,7 +35,6 @@ const Form = ({
         : message;
       return allErrors;
     }, {});
-
     return newErrors;
   };
 

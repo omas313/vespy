@@ -115,12 +115,12 @@ export function getVespa(id) {
 
 export function saveVespa(vespa) {
   let vespaInDb = vespe.find(v => v._id === vespa._id) || {};
-  vespaInDb.km = vespa.km;
+  vespaInDb.km = Number(vespa.km);
   vespaInDb.modello = modelliAPI.modelli.find(m => m._id === vespa.modelloId);
-  vespaInDb.tariffe = vespa.tariffe;
+  vespaInDb.tariffe = Number(vespa.tariffe);
 
   if (!vespaInDb._id) {
-    vespaInDb._id = Date.now();
+    vespaInDb._id = Date.now().toString();
     vespe.push(vespaInDb);
   }
 
