@@ -7,6 +7,7 @@ import Pagination from "./common/pagination";
 import React from "react";
 import VespeTable from "./vespeTable";
 import { Link } from "react-router-dom";
+import SearchBox from "./common/searchBox";
 
 class Vespe extends React.Component {
   defaultFilter = { nome: "Tutto" };
@@ -18,6 +19,7 @@ class Vespe extends React.Component {
     itemsPerPage: 3,
     modelFilter: this.defaultFilter,
     sortColumn: {},
+    search: "",
   };
 
   componentDidMount() {
@@ -37,6 +39,7 @@ class Vespe extends React.Component {
       modelFilter,
       models,
       sortColumn,
+      search,
     } = this.state;
 
     const hasData = allVespe.length > 0 && models.length > 0;
@@ -58,6 +61,7 @@ class Vespe extends React.Component {
             <Link to="/vespe/new">
               <button className="button">New Vespa</button>
             </Link>
+            <SearchBox value={search} onChange={this.handleSearch} />
             {!hasData || count === 0 ? (
               this.renderNoVespeMessage()
             ) : (
@@ -88,19 +92,25 @@ class Vespe extends React.Component {
 
   renderNoVespeMessage = () => <p>Non ci sono Vespe disponibili.</p>;
 
+  filterByModel = () => {
+    const { vespe, modelFilter } = this.state;
+
+    return modelFilter && modelFilter._id
+      ? vespe.filter(v => v.modello._id === modelFilter._id)
+      : vespe;
+  };
+
+  filterBySearch = () => {
+    const { vespe, search } = this.state;
+
+    return vespe.filter(v => v.modello.nome.toLowerCase().includes(search));
+  };
+
   getPaginatedData = () => {
-    const {
-      vespe: allVespe,
-      currentPage,
-      itemsPerPage,
-      modelFilter,
-      sortColumn,
-    } = this.state;
+    const { currentPage, itemsPerPage, sortColumn, search } = this.state;
 
     const filtered =
-      modelFilter && modelFilter._id
-        ? allVespe.filter(v => v.modello._id === modelFilter._id)
-        : allVespe;
+      search !== "" ? this.filterBySearch() : this.filterByModel();
 
     const isReverseOrder = sortColumn.order === "dec";
     const sorted = sortColumn.path
@@ -152,9 +162,15 @@ class Vespe extends React.Component {
   };
 
   handleModelFilterSelected = model => {
-    if (this.state.modelFilter === model) return;
+    this.setState({ modelFilter: model, currentPage: 1, search: "" });
+  };
 
-    this.setState({ modelFilter: model, currentPage: 1 });
+  handleSearch = query => {
+    this.setState({
+      search: query,
+      modelFilter: this.defaultFilter,
+      currentPage: 1,
+    });
   };
 }
 
