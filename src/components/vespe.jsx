@@ -1,6 +1,6 @@
 import "./vespe.css";
-import { getModelli } from "../services/fakeModelService";
-import { getVespe, deleteVespa } from "../services/fakeVespaService";
+import { getModels } from "../services/modelService";
+import { getVespe, deleteVespa } from "../services/vespaService";
 import { paginate } from "../utils/paginate";
 import ListGroup from "./common/listGroup";
 import Pagination from "./common/pagination";
@@ -8,6 +8,7 @@ import React from "react";
 import VespeTable from "./vespeTable";
 import { Link } from "react-router-dom";
 import SearchBox from "./common/searchBox";
+import { toast } from "react-toastify";
 
 class Vespe extends React.Component {
   defaultFilter = { nome: "Tutto" };
@@ -22,13 +23,14 @@ class Vespe extends React.Component {
     search: "",
   };
 
-  componentDidMount() {
-    const models = [this.defaultFilter, ...getModelli()];
+  async componentDidMount() {
+    const { data: modelsData } = await getModels();
+    const models = [this.defaultFilter, ...modelsData];
 
-    this.setState({
-      vespe: getVespe(),
-      models,
-    });
+    const { data: vespe } = await getVespe();
+
+    this.setState({ vespe, models });
+    toast("Loaded");
   }
 
   render() {
@@ -134,11 +136,22 @@ class Vespe extends React.Component {
     return { count, data: vespe };
   };
 
-  handleDelete = vespaId => {
-    const vespe = this.state.vespe.filter(v => v._id !== vespaId);
-    deleteVespa(vespaId);
+  handleDelete = async vespaId => {
+    const oldVespe = this.state.vespe;
 
+    const vespe = this.state.vespe.filter(v => v._id !== vespaId);
     this.setState({ vespe });
+
+    try {
+      await deleteVespa(vespaId);
+      toast("Deleted Successfully.");
+    } catch (ex) {
+      // expected errors
+      if (ex.response && ex.response.status === 404)
+        toast.error("Couldn't find that post.");
+
+      this.setState({ vespe: oldVespe });
+    }
   };
 
   handleSort = sortColumn => {

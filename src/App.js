@@ -7,7 +7,9 @@ import NotFound from "./components/notFound";
 import VespaForm from "./components/vespaForm";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const links = [
@@ -18,6 +20,7 @@ function App() {
 
   return (
     <main>
+      <ToastContainer position="bottom-right" />
       <Navbar brand="Vespy" links={links} />
       <Switch>
         <Route path="/vespe/new" component={VespaForm} />
