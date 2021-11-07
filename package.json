@@ -12,6 +12,7 @@
     "bootstrap": "^4.1.1",
     "font-awesome": "^4.7.0",
     "joi-browser": "^13.4.0",
+    "jwt-decode": "^3.1.2",
     "milligram": "^1.4.1",
     "normalize": "^0.3.1",
     "prop-types": "^15.7.2",

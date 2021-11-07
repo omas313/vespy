@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Joi from "joi-browser";
 import Input from "./common/input";
 import Form from "./common/form";
-import { createUser } from "../services/userService";
+import { register } from "../services/userService";
+import { login } from "./../services/authService";
 
 const LoginForm = ({ history }) => {
   const [data, setData] = useState({
@@ -24,8 +25,11 @@ const LoginForm = ({ history }) => {
 
   const handleSubmit = async () => {
     try {
-      await createUser(data);
-      history.replace("/");
+      const response = await register(data);
+      const token = response.headers["x-auth-token"];
+      localStorage.setItem("token", token);
+
+      window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const newErrors = {

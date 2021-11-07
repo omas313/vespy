@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 
-const Navbar = ({ brand, links }) => {
+const Navbar = ({ brand, links, user }) => {
   const navStyles = {
     display: "flex",
     padding: "1rem 2rem",
@@ -10,7 +10,7 @@ const Navbar = ({ brand, links }) => {
 
   const linkContainerStyles = {
     marginLeft: "2rem",
-    width: "100vw",
+    flex: "1",
   };
 
   const listStyles = {
@@ -40,12 +40,23 @@ const Navbar = ({ brand, links }) => {
       </div>
       <div>
         <ul style={listStyles}>
-          <li style={listItemStyles}>
-            <Link to="/login">Login</Link>
-          </li>
-          <li style={listItemStyles}>
-            <Link to="/register">Register</Link>
-          </li>
+          {user && user.name ? (
+            <>
+              <li style={listItemStyles}>Hi, {user.name}!</li>
+              <li style={listItemStyles}>
+                <Link to="/logout">Logout</Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li style={listItemStyles}>
+                <Link to="/login">Login</Link>
+              </li>
+              <li style={listItemStyles}>
+                <Link to="/register">Register</Link>
+              </li>
+            </>
+          )}
         </ul>
       </div>
     </nav>

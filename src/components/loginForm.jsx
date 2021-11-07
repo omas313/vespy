@@ -20,11 +20,11 @@ const LoginForm = ({ history }) => {
 
   const handleSubmit = async () => {
     try {
-      const { username, password } = data;
-      const { data: jwt } = await login(username, password);
+      const { email, password } = data;
+      const { data: jwt } = await login(email, password);
       localStorage.setItem("token", jwt);
 
-      history.replace("/");
+      window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const newErrors = {
