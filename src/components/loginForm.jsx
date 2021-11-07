@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import Joi from "joi-browser";
 import Input from "./common/input";
 import Form from "./common/form";
+import { login } from "../services/authService";
 
-const LoginForm = () => {
+const LoginForm = ({ history }) => {
   const [data, setData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
 
@@ -17,8 +18,22 @@ const LoginForm = () => {
     textAlign: "center",
   };
 
-  const handleSubmit = () => {
-    console.log("form submitted");
+  const handleSubmit = async () => {
+    try {
+      const { username, password } = data;
+      const { data: jwt } = await login(username, password);
+      localStorage.setItem("token", jwt);
+
+      history.replace("/");
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        const newErrors = {
+          email: ex.response.data,
+          password: ex.response.data,
+        };
+        setErrors(newErrors);
+      }
+    }
   };
 
   return (
