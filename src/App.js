@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import jwtDecode from "jwt-decode";
 import Customers from "./components/customers";
 import LoginForm from "./components/loginForm";
+import Logout from "./components/logout";
 import Navbar from "./components/common/navbar";
 import NotFound from "./components/notFound";
 import RegisterForm from "./components/registerForm";
@@ -44,6 +45,7 @@ function App() {
         <Route path="/customers" component={Customers} />
         <Route path="/rentals" component={Rentals} />
         <Route path="/not-found" component={NotFound} />
+        <Route path="/logout" component={Logout} />
         <Route path="/login" component={LoginForm} />
         <Route path="/register" component={RegisterForm} />
         <Redirect exact from="/" to="/vespe" />
