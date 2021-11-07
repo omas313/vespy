@@ -2,17 +2,18 @@ import React, { useState } from "react";
 import Joi from "joi-browser";
 import Input from "./common/input";
 import Form from "./common/form";
+import { createUser } from "../services/userService";
 
-const LoginForm = () => {
+const LoginForm = ({ history }) => {
   const [data, setData] = useState({
-    username: "",
+    email: "",
     password: "",
     name: "",
   });
   const [errors, setErrors] = useState({});
 
   const schema = {
-    username: Joi.string().email().required().label("Username"),
+    email: Joi.string().email().required().label("Email"),
     password: Joi.string().min(5).required().label("Password"),
     name: Joi.string().required().label("Name"),
   };
@@ -21,8 +22,19 @@ const LoginForm = () => {
     margin: "0 10em",
   };
 
-  const handleSubmit = () => {
-    console.log("form submitted");
+  const handleSubmit = async () => {
+    try {
+      await createUser(data);
+      history.replace("/");
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        const newErrors = {
+          ...errors,
+          email: ex.response.data,
+        };
+        setErrors(newErrors);
+      }
+    }
   };
 
   return (
@@ -41,10 +53,10 @@ const LoginForm = () => {
         <Input
           type="email"
           placeholder="Enter your email..."
-          name="username"
-          label="Username"
-          value={data.username}
-          error={errors.username}
+          name="email"
+          label="Email"
+          value={data.email}
+          error={errors.email}
         />
         <Input
           type="password"
