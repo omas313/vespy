@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Joi from "joi-browser";
 import Input from "./common/input";
 import Form from "./common/form";
-import { login } from "../services/authService";
+import auth from "../services/authService";
 
 const LoginForm = ({ history }) => {
   const [data, setData] = useState({ email: "", password: "" });
@@ -21,9 +21,7 @@ const LoginForm = ({ history }) => {
   const handleSubmit = async () => {
     try {
       const { email, password } = data;
-      const { data: jwt } = await login(email, password);
-      localStorage.setItem("token", jwt);
-
+      await auth.login(email, password);
       window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {

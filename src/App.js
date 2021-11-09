@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router";
 import { ToastContainer } from "react-toastify";
-import jwtDecode from "jwt-decode";
 import Customers from "./components/customers";
 import LoginForm from "./components/loginForm";
 import Logout from "./components/logout";
@@ -11,6 +10,7 @@ import RegisterForm from "./components/registerForm";
 import Rentals from "./components/rentals";
 import VespaForm from "./components/vespaForm";
 import Vespe from "./components/vespe";
+import auth from "./services/authService";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
@@ -18,15 +18,8 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    try {
-      if (user) return;
-
-      const jwt = localStorage.getItem("token");
-      if (!jwt) return;
-
-      setUser(jwtDecode(jwt));
-    } catch (ex) {}
-  }, [user]);
+    setUser(auth.getCurrentUser());
+  }, []);
 
   const links = [
     { url: "/vespe", label: "All Vespe" },
