@@ -4,7 +4,7 @@ import Input from "./common/input";
 import Form from "./common/form";
 import auth from "../services/authService";
 
-const LoginForm = ({ history }) => {
+const LoginForm = ({ location }) => {
   const [data, setData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
 
@@ -22,7 +22,9 @@ const LoginForm = ({ history }) => {
     try {
       const { email, password } = data;
       await auth.login(email, password);
-      window.location = "/";
+
+      const { state } = location;
+      window.location = state ? state.from.pathname : "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const newErrors = {
