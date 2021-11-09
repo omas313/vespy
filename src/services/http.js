@@ -16,12 +16,16 @@ axios.interceptors.response.use(null, error => {
   return Promise.reject(error);
 });
 
+const setToken = token =>
+  (axios.defaults.headers.common["x-auth-token"] = token);
+
 const http = {
   get: axios.get,
   post: axios.post,
   put: axios.put,
   patch: axios.patch,
   delete: axios.delete,
+  setToken,
 };
 
 export default http;

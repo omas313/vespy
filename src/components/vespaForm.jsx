@@ -5,6 +5,7 @@ import Joi from "joi-browser";
 import { getModels } from "../services/modelService";
 import { getVespa, saveVespa } from "./../services/vespaService";
 import Select from "./common/select";
+import { toast } from "react-toastify";
 
 const VespaForm = ({ match, history }) => {
   const [data, setData] = useState({
@@ -62,9 +63,12 @@ const VespaForm = ({ match, history }) => {
   };
 
   const handleSave = async () => {
-    await saveVespa(data);
-
-    history.push("/vespe");
+    try {
+      await saveVespa(data);
+      history.push("/vespe");
+    } catch (ex) {
+      toast.error(ex.response.data);
+    }
   };
 
   return (

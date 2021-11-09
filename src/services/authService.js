@@ -27,6 +27,10 @@ export const getCurrentUser = () => {
   }
 };
 
+export const getToken = () => localStorage.getItem(tokenKey);
+
+http.setToken(getToken());
+
 const auth = {
   login,
   loginWithToken,
