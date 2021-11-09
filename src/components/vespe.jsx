@@ -43,6 +43,7 @@ class Vespe extends React.Component {
       sortColumn,
       search,
     } = this.state;
+    const { user } = this.props;
 
     const hasData = allVespe.length > 0 && models.length > 0;
     const { count, data } = this.getPaginatedData();
@@ -60,9 +61,11 @@ class Vespe extends React.Component {
             )}
           </div>
           <div className="column">
-            <Link to="/vespe/new">
-              <button className="button">New Vespa</button>
-            </Link>
+            {user && (
+              <Link to="/vespe/new">
+                <button className="button">New Vespa</button>
+              </Link>
+            )}
             <SearchBox value={search} onChange={this.handleSearch} />
             {!hasData || count === 0 ? (
               this.renderNoVespeMessage()

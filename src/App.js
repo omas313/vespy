@@ -34,7 +34,10 @@ function App() {
       <Switch>
         <Route path="/vespe/new" component={VespaForm} />
         <Route path="/vespe/:id" component={VespaForm} />
-        <Route path="/vespe" component={Vespe} />
+        <Route
+          path="/vespe"
+          render={props => <Vespe {...props} user={user} />}
+        />
         <Route path="/customers" component={Customers} />
         <Route path="/rentals" component={Rentals} />
         <Route path="/not-found" component={NotFound} />
