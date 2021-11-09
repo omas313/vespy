@@ -13,6 +13,7 @@ import Vespe from "./components/vespe";
 import auth from "./services/authService";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+import ProtectedRoute from "./components/common/protectedRoute";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -32,8 +33,8 @@ function App() {
       <ToastContainer position="bottom-right" />
       <Navbar brand="Vespy" links={links} user={user} />
       <Switch>
-        <Route path="/vespe/new" component={VespaForm} />
-        <Route path="/vespe/:id" component={VespaForm} />
+        <ProtectedRoute path="/vespe/new" component={VespaForm} />
+        <ProtectedRoute path="/vespe/:id" component={VespaForm} />
         <Route
           path="/vespe"
           render={props => <Vespe {...props} user={user} />}
