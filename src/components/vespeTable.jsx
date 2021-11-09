@@ -1,6 +1,7 @@
 import React from "react";
 import Like from "./common/like";
 import Table from "./common/table";
+import auth from "../services/authService";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
@@ -21,14 +22,21 @@ class VespeTable extends React.Component {
         <Like isLiked={v.mipiace} onToggle={() => this.props.onLikeToggle(v)} />
       ),
     },
-    {
-      content: v => (
-        <button className="button" onClick={() => this.props.onDelete(v._id)}>
-          Delete
-        </button>
-      ),
-    },
   ];
+
+  deleteColumn = {
+    content: v => (
+      <button className="button" onClick={() => this.props.onDelete(v._id)}>
+        Delete
+      </button>
+    ),
+  };
+
+  constructor() {
+    super();
+    const user = auth.getCurrentUser();
+    if (user && user.isAdmin) this.columns.push(this.deleteColumn);
+  }
 
   render() {
     const { data, sortColumn, onSort } = this.props;
