@@ -3,6 +3,7 @@ import Joi from "joi-browser";
 import Input from "./common/input";
 import Form from "./common/form";
 import auth from "../services/authService";
+import { Redirect } from "react-router";
 
 const LoginForm = ({ location }) => {
   const [data, setData] = useState({ email: "", password: "" });
@@ -35,6 +36,8 @@ const LoginForm = ({ location }) => {
       }
     }
   };
+
+  if (auth.getCurrentUser()) return <Redirect to="/" />;
 
   return (
     <>
