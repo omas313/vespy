@@ -18,15 +18,22 @@ _Note: The app interface was created in Italian for practice purposes._
 
 ## Actions
 
-For all users:
+### For all users:
 
 - Browse the available vespas.
+- Search for vespas with search box.
+- Filter by available models.
+- Sort ascending and descending by clicking on a column.
+- Like/Unlike a vespa (aesthetic only).
+- Navigate to other empty pages.
+- Create an account (use fake email and password but remember them).
+- Log in to acces more features.
 
-For authenticated users (those who create an account):
+### For authenticated users (those who create an account and log in):
 
 - Create vespa entries.
 - Edit vespa entries.
 
-For admins:
+### For admins:
 
 - Delete vespa entries.
