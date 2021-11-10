@@ -1,8 +1,7 @@
 import http from "./http";
-import { apiEnpoint } from "../config.json";
 
-const vespeUrl = `${apiEnpoint}/vespe`;
-const getVespaUrl = id => `${apiEnpoint}/vespe/${id}`;
+const vespeUrl = "/vespe";
+const getVespaUrl = id => `/vespe/${id}`;
 
 export const getVespe = () => http.get(vespeUrl);
 
